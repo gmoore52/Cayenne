@@ -4,7 +4,6 @@ if(WIN32)
                     -DCY_BUILD_DLL)
 endif(WIN32)
 
-
 add_subdirectory(lib/spdlog)
 
 find_package(spdlog)

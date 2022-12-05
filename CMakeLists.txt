@@ -18,3 +18,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
                            ${PROJECT_SOURCE_DIR}/Cayenne/src
                            )
 
+add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            $<TARGET_FILE_DIR:Cayenne>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>)
