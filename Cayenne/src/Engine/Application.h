@@ -1,13 +1,9 @@
-//
-// Created by gavin on 12/4/2022.
-//
+#include <Engine/core.h>
+#include <cayennepch.h>
+#include <Engine/events/Event.h>
 
 #ifndef CAYENNE_APPLICATION_H
 #define CAYENNE_APPLICATION_H
-
-
-#include "core.h"
-//#include "events/Event.h"
 
 namespace Cayenne {
     class CY_API Application {
@@ -21,6 +17,5 @@ namespace Cayenne {
 
     Application* CreateApplication();
 }
-
 
 #endif //CAYENNE_APPLICATION_H

@@ -11,10 +11,11 @@ find_package(spdlog)
 include_directories(${PROJECT_SOURCE_DIR}/src
                     ${PROJECT_SOURCE_DIR}/lib/spdlog/include)
 
-add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCE_DIR}/src/Engine/Application.cpp
+add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCE_DIR}/src/cayennepch.h
+                                   ${PROJECT_SOURCE_DIR}/src/Engine/Application.cpp
                                    ${PROJECT_SOURCE_DIR}/src/Engine/Log.cpp)
 
 target_link_libraries(${PROJECT_NAME} spdlog)
-#target_precompile_headers(${PROJECT_NAME} PUBLIC cayennepch.h)
+#target_precompile_headers(${PROJECT_NAME} PUBLIC src/cayennepch.h)
 
 

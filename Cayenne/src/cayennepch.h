@@ -1,7 +1,3 @@
-//
-// Created by gavin on 12/4/2022.
-//
-
 #ifndef CAYENNETESTPROJECT_CAYENNEPCH_H
 #define CAYENNETESTPROJECT_CAYENNEPCH_H
 
@@ -20,6 +16,5 @@
 #ifdef CY_PLATFORM_WINDOWS
     #include <Windows.h>
 #endif
-
 
 #endif //CAYENNETESTPROJECT_CAYENNEPCH_H

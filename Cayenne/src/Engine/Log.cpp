@@ -1,9 +1,5 @@
-//
-// Created by gavin on 12/4/2022.
-//
-
+#include <cayennepch.h>
 #include "Log.h"
-//#include "../lib/spdlog/include/spdlog/spdlog.h"
 
 namespace Cayenne {
 

@@ -18,6 +18,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
                            ${PROJECT_SOURCE_DIR}/Cayenne/src
                            )
 
+#target_precompile_headers(${PROJECT_NAME} PUBLIC Cayenne/src/cayennepch.h)
+
 add_custom_command(
             TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory

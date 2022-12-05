@@ -1,10 +1,7 @@
-//
-// Created by gavin on 12/4/2022.
-//
-#include "core.h"
-#include "../lib/spdlog/include/spdlog/spdlog.h"
-#include "../lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h"
-#include "../lib/spdlog/include/spdlog/fmt/ostr.h"
+#include <Engine/core.h>
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/fmt/ostr.h>
 
 #ifndef CAYENNE_LOG_H
 #define CAYENNE_LOG_H
