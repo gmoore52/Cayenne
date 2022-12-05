@@ -1,0 +1,3 @@
+[submodule "Cayenne/lib/spdlog"]
+	path = Cayenne/lib/spdlog
+	url = https://github.com/gabime/spdlog

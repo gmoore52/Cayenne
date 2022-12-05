@@ -1,16 +1,20 @@
 cmake_minimum_required(VERSION 3.22)
-project(EngineGamePractice)
+project(CayenneTestProject)
+
+if(WIN32)
+    add_definitions(-DCY_PLATFORM_WINDOWS)
+endif(WIN32)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} TestApp/Test.cpp)
 
-add_subdirectory(EngineName)
+add_subdirectory(Cayenne)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC EngineName)
+target_link_libraries(${PROJECT_NAME} PUBLIC Cayenne)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-                           "${PROJECT_BINARY_DIR}"
-                           "${PROJECT_SOURCE_DIR}/EngineName"
+                           ${PROJECT_BINARY_DIR}
+                           ${PROJECT_SOURCE_DIR}/Cayenne/src
                            )
 
