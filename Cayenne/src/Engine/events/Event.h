@@ -26,7 +26,6 @@ namespace Cayenne {
         EventCategoryMouse = BIT(3),
         EventCategoryMouseButton = BIT(4)
     };
-    EventType x = EventType::WindowResize;
 
     #define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\
                                     virtual EventType GetEventType() const override { return GetStaticType(); }\
