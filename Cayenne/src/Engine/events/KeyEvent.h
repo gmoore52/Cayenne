@@ -1,7 +1,7 @@
 #include "Event.h"
 
-#ifndef CAYENNETESTPROJECT_KEYEVENT_H
-#define CAYENNETESTPROJECT_KEYEVENT_H
+#ifndef CAYENNE_KEYEVENT_H
+#define CAYENNE_KEYEVENT_H
 
 namespace Cayenne {
 
@@ -53,6 +53,22 @@ namespace Cayenne {
 
     EVENT_CLASS_TYPE(KeyReleased)
     };
+    class CY_API KeyTypedEvent : public KeyEvent
+    {
+        public:
+        KeyTypedEvent(int keycode)
+                : KeyEvent(keycode) {}
+
+        std::string ToString() const override
+    {
+        std::stringstream ss;
+        ss << "KeyTypedEvent: " << m_KeyCode;
+        return ss.str();
+    }
+
+    EVENT_CLASS_TYPE(KeyTyped)
+    };
+
 }
 
-#endif //CAYENNETESTPROJECT_KEYEVENT_H
+#endif //CAYENNE_KEYEVENT_H

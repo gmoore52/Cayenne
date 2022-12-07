@@ -11,7 +11,17 @@
     #error "Currently only windows support for Cayenne"
 #endif
 
+#ifdef CY_ENABLE_ASSERTS
+    #define CY_ASSERT(x, ...) { if(!(x)) { CY_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+	#define CY_CORE_ASSERT(x, ...) { if(!(x)) { CY_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+#else
+    #define CY_ASSERT(x, ...)
+    #define CY_CORE_ASSERT(x, ...)
+#endif
+
 #define BIT(x) (1 << x)
+
+#define BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 
 #endif //CAYENNE_CORE_H
 

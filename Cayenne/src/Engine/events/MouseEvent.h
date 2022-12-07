@@ -1,7 +1,7 @@
 #include "Event.h"
 
-#ifndef CAYENNETESTPROJECT_MOUSEEVENT_H
-#define CAYENNETESTPROJECT_MOUSEEVENT_H
+#ifndef CAYENNE_MOUSEEVENT_H
+#define CAYENNE_MOUSEEVENT_H
 
 #include "Event.h"
 
@@ -99,4 +99,4 @@ namespace Cayenne {
 
 }
 
-#endif //CAYENNETESTPROJECT_MOUSEEVENT_H
+#endif //CAYENNE_MOUSEEVENT_H

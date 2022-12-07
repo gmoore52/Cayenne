@@ -1,7 +1,9 @@
 #include <Engine/core.h>
+#include <Engine/Log.h>
 
-#ifndef CAYENNETESTPROJECT_EVENT_H
-#define CAYENNETESTPROJECT_EVENT_H
+#ifndef CAYENNE_EVENT_H
+#define CAYENNE_EVENT_H
+
 
 namespace Cayenne {
 
@@ -13,7 +15,7 @@ namespace Cayenne {
         None = 0,
         WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
         AppTick, AppUpdate, AppRender,
-        KeyPressed, KeyReleased,
+        KeyPressed, KeyReleased, KeyTyped,
         MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
     };
 
@@ -35,19 +37,18 @@ namespace Cayenne {
 
     class CY_API Event
             {
-                    friend class EventDispatcher;
-                    public:
-                    virtual EventType GetEventType() const = 0;
-                    virtual const char* GetName() const = 0;
-                    virtual int GetCategoryFlags() const = 0;
-                    virtual std::string ToString() const { return GetName(); }
+            friend class EventDispatcher;
+            public:
+                bool Handled = false;
+                virtual EventType GetEventType() const = 0;
+                virtual const char* GetName() const = 0;
+                virtual int GetCategoryFlags() const = 0;
+                virtual std::string ToString() const { return GetName(); }
 
-                    inline bool IsInCategory(EventCategory category)
-                    {
-                        return GetCategoryFlags() & category;
-                    }
-                    protected:
-                    bool m_Handled = false;
+                inline bool IsInCategory(EventCategory category)
+                {
+                    return GetCategoryFlags() & category;
+                }
             };
 
     class EventDispatcher
@@ -56,7 +57,7 @@ namespace Cayenne {
         using EventFn = std::function<bool(T&)>;
     public:
         EventDispatcher(Event& event)
-                : m_Event(event)
+                        : m_Event(event)
         {
         }
 
@@ -65,7 +66,7 @@ namespace Cayenne {
         {
             if (m_Event.GetEventType() == T::GetStaticType())
             {
-                m_Event.m_Handled = func(*(T*)&m_Event);
+                m_Event.Handled = func(*(T*)&m_Event);
                 return true;
             }
             return false;
@@ -80,4 +81,4 @@ namespace Cayenne {
     }
 }
 
-#endif //CAYENNETESTPROJECT_EVENT_H
+#endif //CAYENNE_EVENT_H
