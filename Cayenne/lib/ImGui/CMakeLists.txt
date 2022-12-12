@@ -16,4 +16,12 @@ add_library(${PROJECT_NAME} STATIC imgui/imconfig.h
                                    imgui/imstb_textedit.h
                                    imgui/imstb_truetype.h
                                    imgui/imgui_demo.cpp
+                                   ImGuiFileDialog.cpp
+                                   ImGuiFileDialog.h
+                                   ImGuiFileDialogConfig.h
+                                   implot.cpp
+                                   implot.h
+                                   implot_demo.cpp
+                                   implot_internal.h
+                                   implot_items.cpp
                                    ${PLATFORM_LIBS})

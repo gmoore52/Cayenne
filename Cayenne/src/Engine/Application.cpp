@@ -1,4 +1,5 @@
 #include "Application.h"
+#include <GLFW/glfw3.h>
 namespace Cayenne
 {
     Application* Application::c_Instance = nullptr;
@@ -9,6 +10,9 @@ namespace Cayenne
         c_Instance = this;
         m_Window = std::unique_ptr<Window>(Window::Create());
         m_Window->SetEventCallback(BIND_EVENT_FN(Application::EventHandler));
+
+        m_ImGuiLayer = new ImGuiLayer();
+        PushOverlay(m_ImGuiLayer);
     }
 
     Application::~Application()
@@ -28,11 +32,8 @@ namespace Cayenne
     }
 
     void Application::EventHandler(Event &event) {
-        if(event.GetEventType() == EventType::WindowClose)
-            m_Window = nullptr;
-
         EventDispatcher dispatcher(event);
-//        dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+        dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
         for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
         {
             (*--it)->OnEvent(event);
@@ -47,11 +48,28 @@ namespace Cayenne
     {
         while (m_Running)
         {
-//            m_LayerStack.begin()->data->OnUpdate();
+
+            float time = (float)glfwGetTime();
+            Timestep timestep = time - m_LastFrameTime;
+            m_LastFrameTime = time;
+
+            for (Layer* layer : m_LayerStack)
+                layer->OnUpdate(timestep);
+
+            m_ImGuiLayer->Begin();
             for (Layer *layer : m_LayerStack)
-                layer->OnUpdate();
+                layer->OnImGuiRender();
+            m_ImGuiLayer->End();
+
             m_Window->OnUpdate();
         }
+
+    }
+
+    bool Application::OnWindowClose(WindowCloseEvent& e)
+    {
+        m_Running = false;
+        return true;
     }
 
 }

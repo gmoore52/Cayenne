@@ -1,4 +1,5 @@
 #include <Engine/core.h>
+#include <Engine/Core/Timestep.h>
 #include <Engine/events/Event.h>
 #ifndef CAYENNE_LAYER_H
 #define CAYENNE_LAYER_H
@@ -12,7 +13,8 @@ namespace Cayenne
 
         virtual void OnAttach() {};
         virtual void OnDetach() {};
-        virtual void OnUpdate() {};
+        virtual void OnUpdate(Timestep ts) {};
+        virtual void OnImGuiRender() {}
         virtual void OnEvent(Event& event) {}
 
         inline const std::string& GetName() {return m_DebugName;}

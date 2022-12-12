@@ -2,8 +2,11 @@
 #include <Engine/events/ApplicationEvent.h>
 #include <Engine/events/KeyEvent.h>
 #include <Engine/events/MouseEvent.h>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+//#include <glad/glad.h>
+//#include <GLFW/glfw3.h>
+//#include <platform/OpenGL/OpenGLContext.h>
+#include "../../src/Engine/renderer/Context.h"
+#include "../OpenGL/OpenGLContext.h"
 
 #ifndef CAYENNE_WIN32WINDOW_H
 #define CAYENNE_WIN32WINDOW_H
@@ -23,11 +26,14 @@ namespace Cayenne {
         inline void SetEventCallback(const EventCallbackFn& callback) override {m_Data.EventCallback = callback;}
         void SetVSync(bool enabled);
         bool IsVSync() const;
+
+        inline virtual void* GetInstanceWindow() const {return m_Window;};
     private:
         virtual void Init(const WindowProps& props);
         virtual void Shutdown();
 
         GLFWwindow* m_Window;
+        GraphicsContext* m_Context;
 
         struct WindowData
         {

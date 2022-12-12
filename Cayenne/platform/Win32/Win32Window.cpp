@@ -37,9 +37,8 @@ namespace Cayenne {
         }
 
         m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, props.Title.c_str(), nullptr, nullptr);
-        glfwMakeContextCurrent(m_Window);
-        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        CY_CORE_ASSERT(status, "Failed to initialize Glad!");
+        m_Context = new OpenGLContext(m_Window);
+        m_Context->Init();
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
 
@@ -129,7 +128,7 @@ namespace Cayenne {
     void Win32Window::OnUpdate()
     {
         glfwPollEvents();
-        glfwSwapBuffers(m_Window);
+        m_Context->SwapBuffers();
     }
 
     void Win32Window::SetVSync(bool enabled)
