@@ -71,8 +71,8 @@ namespace Cayenne
         }
 
         // Read the width and height of the image
-        file.read((char*)&image.width, sizeof(int));
-        file.read((char*)&image.height, sizeof(int));
+        file.read((char*)&(image.width), sizeof(int));
+        file.read((char*)&(image.height), sizeof(int));
 
         // Reserve space for the pixels
         image.pixels.reserve(image.width * image.height);

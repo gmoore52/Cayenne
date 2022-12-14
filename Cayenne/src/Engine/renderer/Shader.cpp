@@ -4,6 +4,18 @@
 #include "../platform/OpenGL/OpenGLShader.h"
 
 namespace Cayenne {
+    Shader* Shader::Create(const std::string& filepath)
+    {
+        switch (Renderer::GetAPI())
+        {
+            case RendererAPI::API::NONE:    CY_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+            case RendererAPI::API::OPENGL:  return new OpenGLShader(filepath);
+        }
+
+        CY_CORE_ASSERT(false, "Unknown RendererAPI!");
+        return nullptr;
+    }
+
 
     Shader* Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
     {

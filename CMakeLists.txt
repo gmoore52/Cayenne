@@ -9,7 +9,8 @@ endif(WIN32)
 set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(Cayenne)
-
+# Build exe in to the TestApp folder
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ../TestApp/)
 add_executable(${PROJECT_NAME} TestApp/Test.cpp)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC Cayenne)

@@ -1,7 +1,6 @@
 #include <Cayenne.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-//#include "../Cayenne/lib
 #include "../Cayenne/lib/ImGui/imgui/imgui.h"
 
 class ExampleLayer : public Cayenne::Layer
@@ -116,37 +115,10 @@ public:
 
         m_FlatColorShader.reset(Cayenne::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
 
-        std::string textureShaderVertexSrc = R"(
-			#version 330 core
+        m_TextureShader.reset(Cayenne::Shader::Create("assets/texture.glsl"));
 
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec2 a_TexCoord;
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
-			out vec2 v_TexCoord;
-			void main()
-			{
-				v_TexCoord = a_TexCoord;
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-			}
-		)";
+        m_Texture = Cayenne::Texture2D::Create("assets/Iceberg.png");
 
-        std::string textureShaderFragmentSrc = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-			in vec2 v_TexCoord;
-
-			uniform sampler2D u_Texture;
-			void main()
-			{
-				color = texture(u_Texture, v_TexCoord);
-			}
-		)";
-
-        m_TextureShader.reset(Cayenne::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
-
-        m_Texture = Cayenne::Texture2D::Create("assets/tifF_Test.tif");
 
         std::dynamic_pointer_cast<Cayenne::OpenGLShader>(m_TextureShader)->Bind();
         std::dynamic_pointer_cast<Cayenne::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);

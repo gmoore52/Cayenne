@@ -77,11 +77,11 @@ SOFTWARE.
 	#define PATH_SEP '/'
 #endif // _IGFD_UNIX_
 
-#include "imgui.h"
+#include "imgui/imgui.h"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 	#define IMGUI_DEFINE_MATH_OPERATORS
 #endif // IMGUI_DEFINE_MATH_OPERATORS
-#include "imgui_internal.h"
+#include "imgui/imgui_internal.h"
 
 #include <cstdlib>
 #include <algorithm>

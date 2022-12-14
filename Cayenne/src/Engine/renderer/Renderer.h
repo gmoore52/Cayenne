@@ -17,6 +17,7 @@ namespace Cayenne {
             NONE = 0, OPENGL = 1
         };
 
+        virtual void Init() = 0;
         virtual void SetClearColor(const glm::vec4& color) = 0;
         virtual void Clear() = 0;
 
@@ -32,6 +33,11 @@ namespace Cayenne {
     class RenderCommand
     {
     public:
+        inline static void Init()
+        {
+            c_RendererAPI->Init();
+        }
+
         inline static void SetClearColor(const glm::vec4& color)
         {
             c_RendererAPI->SetClearColor(color);
@@ -49,10 +55,14 @@ namespace Cayenne {
     private:
         static RendererAPI* c_RendererAPI;
     };
+
     // Renderer
+
     class Renderer
     {
     public:
+        static void Init();
+
         static void BeginScene(OrthographicCamera& camera);
         static void EndScene();
 
