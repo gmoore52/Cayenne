@@ -1,10 +1,10 @@
 #include <cayennepch.h>
-#include <Engine/core.h>
-#include <Engine/Window.h>
-#include <Engine/LayerStack.h>
+#include <Engine/Core/core.h>
+#include <Engine/Core/Window.h>
+#include <Engine/Core/LayerStack.h>
 #include <Engine/events/Event.h>
 #include <Engine/events/ApplicationEvent.h>
-#include <Engine/DataLoader.h>
+//#include <Engine/DataLoader.h>
 #include <ImGui/ImGuiLayer.h>
 
 #ifndef CAYENNE_APPLICATION_H
@@ -30,13 +30,16 @@ namespace Cayenne {
         std::unique_ptr<Window> m_Window;
         ImGuiLayer* m_ImGuiLayer;
         bool m_Running = true;
-        bool OnWindowClose(WindowCloseEvent& e);
+        bool m_Minimized = false;
 
         LayerStack m_LayerStack;
 
         float m_LastFrameTime = 0.0f;
 
         static Application* c_Instance;
+
+        bool OnWindowClose(WindowCloseEvent& e);
+        bool OnWindowResize(WindowResizeEvent& e);
     };
 
 

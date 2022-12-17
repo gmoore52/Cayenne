@@ -5,7 +5,7 @@
 #include "../../lib/ImGui/imgui/imgui.h"
 #include "../platform/Win32/imgui_impl_glfw.h"
 #include "../platform/Win32/imgui_impl_opengl3.h"
-#include "Engine/Application.h"
+#include "Engine/Core/Application.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 

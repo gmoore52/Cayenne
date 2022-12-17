@@ -19,9 +19,16 @@ namespace Cayenne {
         std::string source = ReadFile(filepath);
         auto shaderSources = PreProcess(source);
         Compile(shaderSources);
+        // Extract name from filepath
+        auto lastSlash = filepath.find_last_of("/\\");
+        lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+        auto lastDot = filepath.rfind('.');
+        auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
+        m_Name = filepath.substr(lastSlash, count);
     }
 
-    OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
+    OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+                                : m_Name(name)
     {
         std::unordered_map<GLenum, std::string> sources;
         sources[GL_VERTEX_SHADER] = vertexSrc;
@@ -75,7 +82,9 @@ namespace Cayenne {
 
     void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources) {
         GLuint program = glCreateProgram();
-        std::vector<GLenum> glShaderIDs(shaderSources.size());
+        CY_CORE_ASSERT(shaderSources.size() <= 2, "We only support 2 shaders for now");
+        std::array<GLenum, 2> glShaderIDs;
+        int glShaderIDIndex = 0;
         for (auto &kv: shaderSources) {
             GLenum type = kv.first;
             const std::string &source = kv.second;
@@ -99,7 +108,7 @@ namespace Cayenne {
                 break;
             }
             glAttachShader(program, shader);
-            glShaderIDs.push_back(shader);
+            glShaderIDs[glShaderIDIndex++] = shader;
         }
 
         m_RendererID = program;
@@ -141,6 +150,27 @@ namespace Cayenne {
     {
         glUseProgram(0);
     }
+
+    void OpenGLShader::SetInt(const std::string& name, int value)
+    {
+        UploadUniformInt(name, value);
+    }
+
+    void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& value)
+    {
+        UploadUniformFloat3(name, value);
+    }
+
+    void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& value)
+    {
+        UploadUniformFloat4(name, value);
+    }
+
+    void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value)
+    {
+        UploadUniformMat4(name, value);
+    }
+
 
     void OpenGLShader::UploadUniformInt(const std::string& name, int value)
     {

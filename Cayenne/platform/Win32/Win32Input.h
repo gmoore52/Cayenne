@@ -1,4 +1,4 @@
-#include <Engine/Input.h>
+#include <Engine/Core/Input.h>
 #ifndef CAYENNE_WIN32INPUT_H
 #define CAYENNE_WIN32INPUT_H
 

@@ -1,5 +1,5 @@
-#include <Engine/core.h>
-#include <Engine/Log.h>
+#include <Engine/Core/core.h>
+#include <Engine/Core/Log.h>
 
 #ifndef CAYENNE_EVENT_H
 #define CAYENNE_EVENT_H

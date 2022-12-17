@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "../platform/OpenGL/OpenGLRenderAPI.h"
 #include "../platform/OpenGL/OpenGLShader.h"
+#include "Renderer2.h"
 
 namespace Cayenne {
 
@@ -13,6 +14,12 @@ namespace Cayenne {
     void Renderer::Init()
     {
         RenderCommand::Init();
+        Renderer2::Init();
+    }
+
+    void Renderer::OnWindowResize(uint32_t width, uint32_t height)
+    {
+        RenderCommand::SetViewport(0, 0, width, height);
     }
 
     void Renderer::BeginScene(OrthographicCamera& camera)

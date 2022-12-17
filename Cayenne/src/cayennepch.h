@@ -8,11 +8,12 @@
 #include <functional>
 #include <string>
 #include <sstream>
+#include <array>
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
 
-#include <Engine/Log.h>
+#include <Engine/Core/Log.h>
 
 
 #ifdef CY_PLATFORM_WINDOWS

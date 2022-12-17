@@ -1,5 +1,5 @@
 #include <cayennepch.h>
-#include <Engine/core.h>
+#include <Engine/Core/core.h>
 #include <Engine/events/Event.h>
 
 #ifndef CAYENNE_WINDOW_H
@@ -12,8 +12,8 @@ namespace Cayenne {
                      Height;
 
         explicit WindowProps(const std::string &title = "Cayenne",
-                             unsigned int width = 400,
-                             unsigned int height = 400) :
+                             unsigned int width = 1280,
+                             unsigned int height = 960) :
                              Title(title), Width(width), Height(height) {}
     };
 

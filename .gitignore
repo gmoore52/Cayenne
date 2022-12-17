@@ -9,3 +9,13 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+# IDE FILES
+.idea/
+.idea/*
+# BUILD FILES
+cmake-build-debug/
+cmake-build-release/
+TestApp/*.exe
+TestApp/*.ini
+*.log
+

@@ -45,14 +45,19 @@ set(RENDER_FILES ${PROJECT_SOURCE_DIR}/src/Engine/renderer/Renderer.cpp
                  src/Engine/renderer/OrthographicCamera.cpp
                  src/Engine/renderer/OrthographicCamera.h
                  src/Engine/renderer/Texture.cpp
-                 src/Engine/renderer/Texture.h)
+                 src/Engine/renderer/Texture.h
+                 src/Engine/renderer/Renderer2.cpp
+                 src/Engine/renderer/Renderer2.h)
 
-set(SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/Engine/Layer.cpp
-                 ${PROJECT_SOURCE_DIR}/src/Engine/LayerStack.cpp
-                 ${PROJECT_SOURCE_DIR}/src/Engine/Log.cpp
-                 ${PROJECT_SOURCE_DIR}/src/Engine/Application.cpp
+set(SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/Engine/Core/Layer.cpp
+                 ${PROJECT_SOURCE_DIR}/src/Engine/Core/LayerStack.cpp
+                 ${PROJECT_SOURCE_DIR}/src/Engine/Core/Log.cpp
+                 ${PROJECT_SOURCE_DIR}/src/Engine/Core/Application.cpp
                  ${PROJECT_SOURCE_DIR}/src/ImGui/ImGuiLayer.cpp
-                 ${PROJECT_SOURCE_DIR}/src/Cayenne.h src/Engine/Core/Timestep.h)
+                 ${PROJECT_SOURCE_DIR}/src/Cayenne.h
+                 src/Engine/Core/Timestep.h
+                 src/Engine/Core/CameraController.cpp
+                 src/Engine/Core/CameraController.h)
 
 add_subdirectory(lib/spdlog)
 

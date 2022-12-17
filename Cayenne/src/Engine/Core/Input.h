@@ -1,7 +1,7 @@
 #ifndef CAYENNE_INPUT_H
 #define CAYENNE_INPUT_H
 
-#include <Engine/core.h>
+#include <Engine/Core/core.h>
 
 namespace Cayenne {
     class CY_API Input

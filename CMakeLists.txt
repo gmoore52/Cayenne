@@ -8,10 +8,16 @@ endif(WIN32)
 
 set(CMAKE_CXX_STANDARD 20)
 
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_definitions(-DCY_ENABLE_ASSERTS)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+endif()
+
 add_subdirectory(Cayenne)
 # Build exe in to the TestApp folder
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ../TestApp/)
-add_executable(${PROJECT_NAME} TestApp/Test.cpp)
+add_executable(${PROJECT_NAME} TestApp/Test.cpp TestApp/TestApplicationLayer.cpp TestApp/TestApplicationLayer.h)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC Cayenne)
 

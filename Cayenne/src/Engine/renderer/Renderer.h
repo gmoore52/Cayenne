@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include "OrthographicCamera.h"
 
+
 #ifndef CAYENNE_RENDERER_H
 #define CAYENNE_RENDERER_H
 
@@ -18,6 +19,7 @@ namespace Cayenne {
         };
 
         virtual void Init() = 0;
+        virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
         virtual void SetClearColor(const glm::vec4& color) = 0;
         virtual void Clear() = 0;
 
@@ -36,6 +38,11 @@ namespace Cayenne {
         inline static void Init()
         {
             c_RendererAPI->Init();
+        }
+
+        inline static void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
+        {
+            c_RendererAPI->SetViewport(x, y, width, height);
         }
 
         inline static void SetClearColor(const glm::vec4& color)
@@ -62,6 +69,7 @@ namespace Cayenne {
     {
     public:
         static void Init();
+        static void OnWindowResize(uint32_t width, uint32_t height);
 
         static void BeginScene(OrthographicCamera& camera);
         static void EndScene();
