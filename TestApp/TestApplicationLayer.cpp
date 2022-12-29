@@ -1,31 +1,91 @@
 #include "TestApplicationLayer.h"
-#include "../Cayenne/lib/ImGui/imgui/imgui.h"
+#include "../Cayenne/lib/ImGui/imgui/imgui.h"\
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 
+struct Position : public Cayenne::Component
+{
+    int x, y;
+};
+
+class Physics : public Cayenne::System
+{
+public:
+
+    Physics() : Cayenne::System() {};
+    ~Physics() override = default;
+
+    void Update(const Cayenne::Timestep& ts, Cayenne::ECS* ecs) override
+    {
+
+    }
+};
+struct Sprite : public Cayenne::Component
+{
+    glm::vec4 Color;
+    glm::vec2 SquareSize, SquarePos;
+};
+
+extern Cayenne::ECS c_ECSInstance;
+class RenderSystem : public Cayenne::System
+{
+public:
+    RenderSystem() : Cayenne::System() {};
+    ~RenderSystem() override = default;
+
+
+    void Update(const Cayenne::Timestep& ts, Cayenne::ECS* ecs) override
+    {
+        for(auto ent : m_Entities)
+        {
+            auto SpriteComp = ecs->GetComponent<Sprite>(ent);
+
+            Cayenne::Renderer2::DrawQuad(SpriteComp->SquarePos, SpriteComp->SquareSize, SpriteComp->Color);
+
+        }
+    }
+};
+
+
+
+
 TestApplicationLayer::TestApplicationLayer()
         : Layer("TestApplicationLayer"), m_CameraController(1280.0f / 960.0f, true)
 {
+    c_ECSInstance = std::make_unique<Cayenne::ECS>();
 }
 
 void TestApplicationLayer::OnAttach()
 {
     m_CheckerboardTexture = Cayenne::Texture2D::Create("assets/Checkerboard.png");
+    c_ECSInstance->RegisterComponent<Position>();
+    auto PhysicsSystem = c_ECSInstance->RegisterSystem<Physics>();
+    auto RenderSys = c_ECSInstance->RegisterSystem<RenderSystem>();
+
+    std::bitset<32> phySig;
+    phySig.set(c_ECSInstance->GetComponentType<Position>());
+    c_ECSInstance->SetSystemSignature<Physics>(phySig);
+
+    std::bitset<32> renSig;
+    renSig.set(c_ECSInstance->GetComponentType<Sprite>());
+    c_ECSInstance->SetSystemSignature<RenderSystem>(renSig);
+
+    m_Entity = c_ECSInstance->CreateEntity();
+
+    c_ECSInstance->MountComponent<Sprite>(*m_Entity);
+
+    auto entSprite = c_ECSInstance->GetComponent<Sprite>(*m_Entity);
+
+    entSprite->SquareSize = {1.4f, 1.4f};
+    entSprite->Color = { 0.8f, 0.2f, 0.3f, 1.0f };
+    entSprite->SquarePos = {0.5f, 0.5f};
 
 
-//        m_FlatColorShader = Cayenne::Shader::Create("FlatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
-//
-//        auto textureShader = m_ShaderLibrary.Load("assets/texture.glsl");
 
-//        TextureShader.reset(Cayenne::Shader::Create("assets/texture.glsl"));
 
-//        m_Texture = Cayenne::Texture2D::Create("assets/Iceberg.png");
-//
-//
-//        std::dynamic_pointer_cast<Cayenne::OpenGLShader>(textureShader)->Bind();
-//        std::dynamic_pointer_cast<Cayenne::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
+
 }
 
 void TestApplicationLayer::OnDetach()
@@ -41,9 +101,21 @@ void TestApplicationLayer::OnUpdate(Cayenne::Timestep ts)
     Cayenne::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
     Cayenne::RenderCommand::Clear();
 
+
+
     Cayenne::Renderer2::BeginScene(m_CameraController.GetCamera());
-    Cayenne::Renderer2::DrawQuad({ -1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-    Cayenne::Renderer2::DrawQuad(m_SquarePos, { 0.5f, 0.5f }, m_SquareColor);
+
+
+    c_ECSInstance->OnUpdate(ts);
+
+
+
+
+
+//    auto entity = c_ECSInstance->CreateEntity();
+
+//    Cayenne::Renderer2::DrawQuad({ -1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+//    Cayenne::Renderer2::DrawQuad(m_SquarePos, { 0.5f, 0.5f }, m_SquareColor);
     Cayenne::Renderer2::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture);
     Cayenne::Renderer2::EndScene();
 }

@@ -49,6 +49,17 @@ set(RENDER_FILES ${PROJECT_SOURCE_DIR}/src/Engine/renderer/Renderer.cpp
                  src/Engine/renderer/Renderer2.cpp
                  src/Engine/renderer/Renderer2.h)
 
+set(ECS_FILES src/Engine/ECS/Entity.h
+              src/Engine/ECS/Component.h
+              src/Engine/ECS/System.h
+              src/Engine/ECS/EntityManager.h
+              src/Engine/ECS/EntityManager.cpp
+              src/Engine/ECS/ComponentManager.h
+              src/Engine/ECS/SystemManager.h
+              src/Engine/ECS/ECS.h
+              src/Engine/ECS/ECS.cpp
+        )
+
 set(SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/Engine/Core/Layer.cpp
                  ${PROJECT_SOURCE_DIR}/src/Engine/Core/LayerStack.cpp
                  ${PROJECT_SOURCE_DIR}/src/Engine/Core/Log.cpp
@@ -79,6 +90,7 @@ add_library(${PROJECT_NAME} ${BUILD_CONFIGURATION}
                             ${PROJECT_SOURCE_DIR}/src/cayennepch.h
                             ${PLATFORM_FILES}
                             ${RENDER_FILES}
+                            ${ECS_FILES}
                             ${SOURCE_FILES}
                             )
 
