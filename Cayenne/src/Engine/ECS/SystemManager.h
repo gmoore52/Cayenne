@@ -27,33 +27,20 @@ namespace Cayenne {
         {
             auto && SystemName = typeid(T).name();
             m_Signatures[SystemName] = signature;
+            m_Systems[SystemName]->UpdateComponents();
         }
 
-        void DestroyEntity(Entity& entity)
+        template<typename T>
+        std::bitset<32> GetSignature()
         {
-            for(auto const &[Type, Sys] : m_Systems)
-                Sys->m_Entities.erase(entity);
+            auto && SystemName = typeid(T).name();
+            return m_Signatures[SystemName];
         }
 
-        void EntitySignatureChanged(Entity& entity, std::bitset<32> entitySignature)
-        {
-            for(auto const &[Type, Sys] : m_Systems)
-            {
-                auto const& SysSignature = m_Signatures[Type];
-
-                if((entitySignature & SysSignature) == SysSignature)
-                    Sys->m_Entities.emplace(entity);
-
-                else
-                    Sys->m_Entities.emplace(entity);
-
-            }
-        }
-
-        void UpdateSystems(const Cayenne::Timestep& ts, ECS* ecs)
+        void UpdateSystems(const Cayenne::Timestep& ts)
         {
             for(const auto &[Type, Sys] : m_Systems)
-                Sys->Update(ts, ecs);
+                Sys->Update(ts);
         }
 
     private:

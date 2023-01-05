@@ -57,8 +57,11 @@ set(ECS_FILES src/Engine/ECS/Entity.h
               src/Engine/ECS/ComponentManager.h
               src/Engine/ECS/SystemManager.h
               src/Engine/ECS/ECS.h
-              src/Engine/ECS/ECS.cpp
         )
+
+set(ECS_COMPONENTS src/Engine/ECS/Components/LocalScene.h src/Engine/ECS/Components/Sprite.h)
+
+set(ECS_SYSTEMS src/Engine/ECS/Systems/RenderSystem.h)
 
 set(SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/Engine/Core/Layer.cpp
                  ${PROJECT_SOURCE_DIR}/src/Engine/Core/LayerStack.cpp
@@ -91,6 +94,8 @@ add_library(${PROJECT_NAME} ${BUILD_CONFIGURATION}
                             ${PLATFORM_FILES}
                             ${RENDER_FILES}
                             ${ECS_FILES}
+                            ${ECS_COMPONENTS}
+                            ${ECS_SYSTEMS}
                             ${SOURCE_FILES}
                             )
 

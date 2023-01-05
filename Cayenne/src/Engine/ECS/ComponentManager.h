@@ -13,12 +13,13 @@ namespace Cayenne {
         template<typename T>
         void RegisterComponent()
         {
-            if(m_ComponentToVector[typeid(T).name()].empty())
-                return;
+            auto && ComponentID = m_ComponentIDs[typeid(T).name()];
+//            if(m_ComponentToVector[ComponentID].empty())
+//                return;
 
             m_ComponentIDs[typeid(T).name()] = m_LastComponentID;
 
-            m_ComponentToVector[typeid(T).name()] = {};
+            m_ComponentToVector[ComponentID] = {};
 
             if(m_LastComponentID>=32)
                 m_LastComponentID = 0;
@@ -76,30 +77,32 @@ namespace Cayenne {
                 };
             }
         }
+
+        std::vector<std::shared_ptr<Component>>& GetComponentVector(int pos)
+        {
+            return m_ComponentToVector[pos];
+        }
+
     private:
-
-
         // Map from type string pointer to a component type
         std::unordered_map<const char*, uint8_t> m_ComponentIDs;
 
-
-
         // Map from type string pointer to a component array
-        std::unordered_map<const char*, std::vector<std::shared_ptr<Component>>> m_ComponentToVector;
+        std::unordered_map<uint8_t, std::vector<std::shared_ptr<Component>>> m_ComponentToVector;
 
         // Map of maps that maps the index of the component data to the appropriate entity id
         // first map key is for the ID of the component
         std::unordered_map<uint8_t, std::unordered_map<size_t, uint32_t>> m_IndexToEntities;
         std::unordered_map<uint8_t, std::unordered_map<uint32_t, size_t>> m_EntitiesToIndex;
 
-        // The component type to be assigned to the next registered component - starting at 0
-        uint8_t m_LastComponentID;
+        // The component type to be assigned to the next registered component - starting at 1
+        uint8_t m_LastComponentID = 1;
 
-        // Convenience function to get the statically casted pointer to the ComponentArray of type T.
+        // Convenience function to get the component vector
         template<typename T>
         std::vector<std::shared_ptr<Component>>& GetComponentVector()
         {
-            return m_ComponentToVector[typeid(T).name()];
+            return m_ComponentToVector[m_ComponentIDs[typeid(T).name()]];
         }
 
     };

@@ -25,6 +25,6 @@ namespace Cayenne {
 
     void ECS::OnUpdate(const Timestep& ts)
     {
-        m_SystemManager->UpdateSystems(ts, this);
+        m_SystemManager->UpdateSystems(ts);
     }
 } // Cayenne

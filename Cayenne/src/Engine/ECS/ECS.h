@@ -17,74 +17,95 @@
 namespace Cayenne {
 
     // Entity Component System manager class
+    // Static wrapper class for the Entity, Component, and System managers
     class ECS {
     private:
-        std::unique_ptr<EntityManager> m_EntityManager;
-        std::unique_ptr<ComponentManager> m_ComponentManager;
-        std::unique_ptr<SystemManager> m_SystemManager;
+        inline static std::unique_ptr<EntityManager>     m_EntityManager = std::make_unique<EntityManager>();
+        inline static std::unique_ptr<ComponentManager>  m_ComponentManager = std::make_unique<ComponentManager>();
+        inline static std::unique_ptr<SystemManager>     m_SystemManager = std::make_unique<SystemManager>();
+
 
     public:
         ECS();
         ECS(const ECS&) = delete;
         ECS& operator=(const ECS&) = delete;
 
-        std::shared_ptr<Entity> CreateEntity();
-
-        void DestroyEntity(Entity entity);
-
-        template<typename TComponent>
-        void RegisterComponent()
+        static std::shared_ptr<Entity> CreateEntity()
         {
-            m_ComponentManager->RegisterComponent<TComponent>();
+            auto && entity = m_EntityManager->CreateEntity();
+            CY_CORE_INFO("Created Entity: {0}", entity->EntityID);
+            return entity;
         }
 
-        template<typename TComponent>
-        void MountComponent(Entity entity)
+        static void DestroyEntity(Entity& entity)
         {
-            m_ComponentManager->AddComponent<TComponent>(entity);
-            entity.EntityComponents.set(m_ComponentManager->GetComponentType<TComponent>(), true);
+            m_EntityManager->DestroyEntity(entity);
+            m_ComponentManager->DestroyEntity(entity);
+        }
+
+        template<typename TC>
+        static void RegisterComponent()
+        {
+            m_ComponentManager->RegisterComponent<TC>();
+        }
+
+        template<typename TC>
+        static void MountComponent(Entity& entity)
+        {
+            m_ComponentManager->AddComponent<TC>(entity);
+            entity.EntityComponents.set(m_ComponentManager->GetComponentType<TC>(), true);
 
             m_EntityManager->SetSignature(entity, entity.EntityComponents);
-
-            m_SystemManager->EntitySignatureChanged(entity, entity.EntityComponents);
         }
 
-        template<typename TComponent>
-        void DetachComponent(Entity entity)
+        template<typename TC>
+        static void DetachComponent(Entity& entity)
         {
-            m_ComponentManager->RemoveComponent<TComponent>(entity);
-            entity.EntityComponents.set(m_ComponentManager->GetComponentType<TComponent>(), false);
+            m_ComponentManager->RemoveComponent<TC>(entity);
+            entity.EntityComponents.set(m_ComponentManager->GetComponentType<TC>(), false);
 
             m_EntityManager->SetSignature(entity, entity.EntityComponents);
-
-            m_SystemManager->EntitySignatureChanged(entity, entity.EntityComponents);
         }
 
-        template<typename TComponent>
-        std::shared_ptr<TComponent> GetComponent(Entity& entity)
+        template<typename TC>
+        static std::shared_ptr<TC> GetComponent(Entity& entity)
         {
-            return m_ComponentManager->GetComponent<TComponent>(entity);
+            return m_ComponentManager->GetComponent<TC>(entity);
         }
 
-        template<typename TComponent>
-        uint8_t GetComponentType()
+        template<typename TC>
+        static uint8_t GetComponentType()
         {
-            return m_ComponentManager->template GetComponentType<TComponent>();
+            return m_ComponentManager->GetComponentType<TC>();
         }
 
-        template<typename TSystem>
-        std::shared_ptr<TSystem> RegisterSystem()
+        static std::vector<std::shared_ptr<Component>>& GetComponentsFromID(int pos)
         {
-            return m_SystemManager->RegisterSystem<TSystem>();
+            return m_ComponentManager->GetComponentVector(pos);
         }
 
-        template<typename TSystem>
-        void SetSystemSignature(std::bitset<32> signature)
+        template<typename TS>
+        static std::shared_ptr<TS> RegisterSystem()
         {
-            m_SystemManager->SetSignature<TSystem>(signature);
+            return m_SystemManager->RegisterSystem<TS>();
         }
 
-        void OnUpdate(const Timestep& ts);
+        template<typename TS>
+        static void SetSystemSignature(std::bitset<32> signature)
+        {
+            m_SystemManager->SetSignature<TS>(signature);
+        }
+
+        template<typename TS>
+        static std::bitset<32> GetSystemSignature()
+        {
+            return m_SystemManager->GetSignature<TS>();
+        }
+
+        static void OnUpdate(const Timestep& ts)
+        {
+            m_SystemManager->UpdateSystems(ts);
+        }
 
     };
 

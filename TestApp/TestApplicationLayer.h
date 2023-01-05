@@ -29,6 +29,8 @@ private:
 
     glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 
+    float m_SquareRotate = 0.0f;
+
     glm::vec2 m_SquarePos = {0.0f, 0.0f};
 
     std::shared_ptr<Cayenne::Entity> m_Entity;
