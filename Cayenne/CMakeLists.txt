@@ -1,5 +1,10 @@
 project(Cayenne)
 set(CayenneBuildStatic TRUE)
+
+if(UNIX AND NOT APPLE)
+    set(LINUX TRUE)
+endif(UNIX AND NOT APPLE)
+
 # Set and check if library is built in static mode
 if(CayenneBuildStatic)
     add_definitions(-DCAYENNE_BUILD_STATIC)
@@ -9,7 +14,7 @@ else()
     set(BUILD_CONFIGURATION SHARED)
 endif(CayenneBuildStatic)
 
-set(BUILD_CONFIGURATION STATIC)
+#set(BUILD_CONFIGURATION STATIC)
 
 # Handle different configurations, setup debug and relase configs on your own to define these variables
 if(CMAKE_BUILD_TYPE EQUAL "Debug")
@@ -24,17 +29,26 @@ if(WIN32)
     set(PLATFORM_FILES ${PROJECT_SOURCE_DIR}/platform/Win32/Win32Window.cpp
                        ${PROJECT_SOURCE_DIR}/platform/Win32/Win32Input.cpp
                        )
-    set(PLATFORM_RENDER ${PROJECT_SOURCE_DIR}/platform/OpenGL/OpenGLContext.cpp
-                        ${PROJECT_SOURCE_DIR}/platform/OpenGL/OpenGLBuffer.cpp
-                        platform/OpenGL/OpenGLVertexArray.cpp
-                        platform/OpenGL/OpenGLVertexArray.h
-                        platform/OpenGL/OpenGLRenderAPI.cpp
-                        platform/OpenGL/OpenGLRenderAPI.h
-                        platform/OpenGL/OpenGLShader.cpp
-                        platform/OpenGL/OpenGLShader.h
-                        platform/OpenGL/OpenGLTexture.cpp
-                        platform/OpenGL/OpenGLTexture.h)
+    set(OPENGL_LINK libopengl32.a)
+elseif(LINUX)
+    add_definitions(-DCY_PLATFORM_LINUX
+                    ${BUILD_MODE_DEFINITIONS})
+    set(PLATFORM_FILES ${PROJECT_SOURCE_DIR}/platform/Linux/LinuxWindow.cpp
+                       ${PROJECT_SOURCE_DIR}/platform/Linux/LinuxInput.cpp
+                        )
+    set(OPENGL_LINK GL)
 endif(WIN32)
+
+set(PLATFORM_RENDER ${PROJECT_SOURCE_DIR}/platform/OpenGL/OpenGLContext.cpp
+                    ${PROJECT_SOURCE_DIR}/platform/OpenGL/OpenGLBuffer.cpp
+                    platform/OpenGL/OpenGLVertexArray.cpp
+                    platform/OpenGL/OpenGLVertexArray.h
+                    platform/OpenGL/OpenGLRenderAPI.cpp
+                    platform/OpenGL/OpenGLRenderAPI.h
+                    platform/OpenGL/OpenGLShader.cpp
+                    platform/OpenGL/OpenGLShader.h
+                    platform/OpenGL/OpenGLTexture.cpp
+                    platform/OpenGL/OpenGLTexture.h)
 
 set(RENDER_FILES ${PROJECT_SOURCE_DIR}/src/Engine/renderer/Renderer.cpp
                  ${PROJECT_SOURCE_DIR}/src/Engine/renderer/Shader.cpp
@@ -59,7 +73,8 @@ set(ECS_FILES src/Engine/ECS/Entity.h
               src/Engine/ECS/ECS.h
         )
 
-set(ECS_COMPONENTS src/Engine/ECS/Components/LocalScene.h src/Engine/ECS/Components/Sprite.h)
+set(ECS_COMPONENTS src/Engine/ECS/Components/LocalScene.h
+                   src/Engine/ECS/Components/Sprite.h)
 
 set(ECS_SYSTEMS src/Engine/ECS/Systems/RenderSystem.h)
 
@@ -99,7 +114,7 @@ add_library(${PROJECT_NAME} ${BUILD_CONFIGURATION}
                             ${SOURCE_FILES}
                             )
 
-target_link_libraries(${PROJECT_NAME} PUBLIC spdlog glfw glad glm ImGui libopengl32.a)
+target_link_libraries(${PROJECT_NAME} PUBLIC spdlog glfw glad glm ImGui ${OPENGL_LINK})
 #target_precompile_headers(${PROJECT_NAME} PUBLIC src/cayennepch.h)
 
 

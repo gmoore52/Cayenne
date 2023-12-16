@@ -1,12 +1,20 @@
 cmake_minimum_required(VERSION 3.22)
 project(CayenneTestProject)
 
+if(UNIX AND NOT APPLE)
+    set(LINUX TRUE)
+endif(UNIX AND NOT APPLE)
+
 if(WIN32)
     add_definitions(-DCY_PLATFORM_WINDOWS
                     -DCAYENNE_BUILD_STATIC)
+elseif(LINUX)
+    add_definitions(-DCY_PLATFORM_LINUX
+                    -DCAYENNE_BUILD_STATIC)
 endif(WIN32)
 
-set(CMAKE_CXX_STANDARD 20)
+
+set(CMAKE_CXX_STANDARD 23)
 
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

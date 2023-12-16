@@ -2,8 +2,8 @@ project(ImGui)
 
 include_directories(../GLFW/include)
 
-set(PLATFORM_LIBS ../../platform/Win32/imgui_impl_opengl3.cpp
-                  ../../platform/Win32/imgui_impl_glfw.cpp)
+set(PLATFORM_LIBS ../../platform/ImGui/imgui_impl_opengl3.cpp
+        ../../platform/ImGui/imgui_impl_glfw.cpp)
 
 add_library(${PROJECT_NAME} STATIC imgui/imconfig.h
                                    imgui/imgui.h

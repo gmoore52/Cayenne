@@ -1,7 +1,11 @@
 #include <Engine/renderer/Context.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <GL/GL.h>
+#ifdef CY_PLATFORM_WINDOWS
+    #include <GL/GL.h>
+#elifdef CY_PLATFORM_LINUX
+    #include <GL/gl.h>
+#endif
 #ifndef CAYENNE_OPENGLCONTEXT_H
 #define CAYENNE_OPENGLCONTEXT_H
 

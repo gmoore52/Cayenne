@@ -16,6 +16,21 @@
         delete app;
     }
 
+#elifdef CY_PLATFORM_LINUX
+
+    extern Cayenne::Application* Cayenne::CreateApplication();
+
+    int main(int argc, char** argv)
+    {
+        Cayenne::Log::Init();
+        CY_CORE_WARN("Log Initialized...");
+        CY_INFO("Client Log Initialized...");
+
+        auto app = Cayenne::CreateApplication();
+        app->Run();
+        delete app;
+    }
+
 #endif
 
 
